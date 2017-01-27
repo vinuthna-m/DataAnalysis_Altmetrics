@@ -1,0 +1,99 @@
+---
+output: html_document
+---
+
+#Loading titanic_survival data 
+```{r}
+library(ggplot2)
+altmetrics <- read.csv("C:/Users/vinuthna/Desktop/Data_Science/Datasets/Altmetrics.csv", header = TRUE)
+```
+```{r}
+str(altmetrics)
+```
+```{r}
+altmetrics$Cited <- as.factor(altmetrics$Cited)
+```
+#Variables Impact analysis using visualization
+
+```{r}
+summary(altmetrics$Journal)
+#Visualization for distribution of articles with citations and without citations for each journal
+qplot(data = altmetrics, x = Journal, color = Cited, color = I(black))
+```
+#Plot describing how citations recieved by articles changed based on the published year
+```{r}
+qplot(x = Scopus.year, data = altmetrics, color = Cited)
+#Observation - in the year 2014 % of articles with citations is much less compared to previous years
+```
+
+```{r}
+#Distribution of Scopus citation count
+qplot(data=altmetrics, x=Scopus.citations, binwidth=2) +
+  scale_x_continuous(limits = c(0,500), breaks = seq(0,1000,10)) +
+  scale_y_continuous(limits = c(0,3000))
+```
+```{r}
+#Distribution of scopus citation count across journal level
+qplot(data=altmetrics, x=Scopus.citations, binwidth=2, color = I('blue')) +
+  scale_x_continuous(limits = c(0,500), breaks = seq(0,1000,10)) +
+  scale_y_log10() +
+  facet_wrap(~Journal)
+```
+
+```{r}
+#Summary of citations at journal level
+by(altmetrics$Scopus.citations,altmetrics$Journal,summary)
+```
+```{r}
+summary(log10(altmetrics$Scopus.citations + 1))
+```
+```{r}
+qplot(data=altmetrics, x=Scopus.citations, binwidth=10, color = Journal, geom = 'freqpoly') +
+  scale_x_continuous(limits = c(0,500), breaks = seq(0,1000,10)) +
+  scale_y_log10()
+```
+
+```{r}
+qplot(data = altmetrics, x=Journal, y = Scopus.citations,geom = 'boxplot') + scale_y_log10()
+```
+
+```{r}
+by(altmetrics$Scopus.citations>0,altmetrics$Journal,summary)
+```
+
+```{r}
+qplot(data=altmetrics, y= Scopus.citations, x=Mendeley.readers)
+ggplot(aes(x=Mendeley.readers, y= Scopus.citations), data=altmetrics) + geom_point(alpha = 1/10) +
+  scale_x_continuous(limits = c(0,500), breaks = seq(0,500,25)) +
+  scale_y_continuous(limits = c(0,900))
+```
+```{r}
+qplot(data=altmetrics, y= Scopus.citations, x=Mendeley.readers)
+ggplot(aes(x=Mendeley.readers, y= Scopus.citations), data=altmetrics) + geom_jitter(alpha = 1/10) +
+  scale_x_continuous(limits = c(0,100), breaks = seq(0,100,10)) +
+  scale_y_continuous(limits = c(0,900))
+```
+```{r}
+qplot(data=altmetrics, x=Mendeley.readers, y=Tweeters) +
+  scale_x_continuous(limits = c(0,600), breaks = seq(0,600,40))
+```
+
+```{r}
+qplot(data=altmetrics, x=Mendeley.readers, y=Tweeters) +
+  scale_x_continuous(limits = c(0,600), breaks = seq(0,600,40))
+```
+```{r}
+ggplot(aes(x=Mendeley.readers, y=Tweeters), data = altmetrics) +
+  geom_point(alpha = 1/20) +
+  xlim(0,600) +
+  coord_trans(y = 'sqrt')
+```
+
+
+
+
+
+
+
+
+
