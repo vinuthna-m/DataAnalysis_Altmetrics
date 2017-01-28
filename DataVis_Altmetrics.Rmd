@@ -1,8 +1,7 @@
 ---
 output: html_document
 ---
-
-#Loading titanic_survival data 
+#Altmetric data analysis
 ```{r}
 library(ggplot2)
 altmetrics <- read.csv("C:/Users/vinuthna/Desktop/Data_Science/Datasets/Altmetrics.csv", header = TRUE)
@@ -13,15 +12,16 @@ str(altmetrics)
 ```{r}
 altmetrics$Cited <- as.factor(altmetrics$Cited)
 ```
-#Variables Impact analysis using visualization
+#Variable Impact analysis
 
 ```{r}
 summary(altmetrics$Journal)
 #Visualization for distribution of articles with citations and without citations for each journal
 qplot(data = altmetrics, x = Journal, color = Cited, color = I(black))
 ```
-#Plot describing how citations recieved by articles changed based on the published year
+
 ```{r}
+#Plot describing how citations recieved by articles changed based on the published year
 qplot(x = Scopus.year, data = altmetrics, color = Cited)
 #Observation - in the year 2014 % of articles with citations is much less compared to previous years
 ```
@@ -89,6 +89,49 @@ ggplot(aes(x=Mendeley.readers, y=Tweeters), data = altmetrics) +
   coord_trans(y = 'sqrt')
 ```
 
+```{r}
+qplot(data=altmetrics, y= Scopus.citations, x=Mendeley.readers)
+```
+```{r}
+library(dplyr)
+```
+```{r}
+#Mendely readers impact on citation count analysis
+Mendeley_groups <- group_by(altmetrics, Mendeley.readers)
+altmetrics.CiCnt_by_MenCnt <- summarise(Mendeley_groups, 
+                              citation_count_mean = mean(Scopus.citations),
+                              citation_count_median = median(Scopus.citations),
+                              n = n())
+altmetrics.CiCnt_by_MenCnt <- arrange(altmetrics.CiCnt_by_MenCnt,Mendeley.readers)
+head(altmetrics.CiCnt_by_MenCnt)
+ggplot(aes(x = Mendeley.readers,citation_count_mean), data = altmetrics.CiCnt_by_MenCnt) + geom_line()
+#Facebook walls impact on citation count analysis
+Facebook_groups <- group_by(altmetrics, Facebook.walls)
+altmetrics.Cicnt_by_FB <- summarise(Facebook_groups, 
+                          citation_count_mean = mean(Scopus.citations),
+                          citation_count_meadian = median(Scopus.citations),
+                          n = n())
+head(altmetrics.Cicnt_by_FB)
+ggplot(aes(Facebook.walls, citation_count_mean), data = altmetrics.Cicnt_by_FB) +
+  geom_line()
+#Tweets impact on citation count analysis  
+Twitter_groups <- group_by(altmetrics, Tweeters)
+altmetrics.Cicnt_by_Tweets <- summarise(Twitter_groups, 
+                          citation_count_mean = mean(Scopus.citations),
+                          citation_count_meadian = median(Scopus.citations),
+                          n = n())
+head(altmetrics.Cicnt_by_Tweets)
+ggplot(aes(Tweeters, citation_count_mean), data = altmetrics.Cicnt_by_Tweets) +
+  geom_line()
+News_groups <- group_by(altmetrics, News.outlets)
+altmetrics.Cicnt_by_News <- summarise(News_groups, 
+                          citation_count_mean = mean(Scopus.citations),
+                          citation_count_meadian = median(Scopus.citations),
+                          n = n())
+head(altmetrics.Cicnt_by_News)
+ggplot(aes(News.outlets, citation_count_mean), data = altmetrics.Cicnt_by_News) +
+  geom_line()
+```
 
 
 
