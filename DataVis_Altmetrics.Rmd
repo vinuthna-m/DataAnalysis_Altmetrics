@@ -3,6 +3,40 @@ output: html_document
 ---
 #Altmetric data analysis
 ```{r}
+#Correlation between Scopus.citations and other variales of the data set
+with(altmetrics, cor.test(Scopus.citations, Mendeley.readers))
+with(altmetrics, cor.test(Scopus.citations,Tweeters))
+with(altmetrics, cor.test(Scopus.citations,Facebook.walls))
+with(altmetrics, cor.test(Scopus.citations,Reddit.threads))
+with(altmetrics, cor.test(Scopus.citations,Pinterest.posts))
+with(altmetrics, cor.test(Scopus.citations, Bloggers))
+with(altmetrics, cor.test(Scopus.citations, Peer.review.sites))
+with(altmetrics, cor.test(Scopus.citations, Weibo.users))
+with(altmetrics, cor.test(Scopus.citations, News.outlets))
+with(altmetrics, cor.test(Scopus.citations, Google..authors))
+with(altmetrics, cor.test(Scopus.citations, F1000.reviews))
+with(altmetrics, cor.test(Scopus.citations, Q.A.site.users))
+with(altmetrics, cor.test(Scopus.citations, Policy.documents))
+with(altmetrics, cor.test(Scopus.citations, CiteULike.readers))
+```
+
+```{r}
+with(altmetrics, cor.test(Mendeley.readers,Tweeters))
+with(altmetrics, cor.test(Mendeley.readers,Facebook.walls))
+with(altmetrics, cor.test(Mendeley.readers,Reddit.threads))
+with(altmetrics, cor.test(Mendeley.readers,Pinterest.posts))
+with(altmetrics, cor.test(Mendeley.readers, Bloggers))
+with(altmetrics, cor.test(Mendeley.readers, Peer.review.sites))
+with(altmetrics, cor.test(Mendeley.readers, Weibo.users))
+with(altmetrics, cor.test(Mendeley.readers, News.outlets))
+with(altmetrics, cor.test(Mendeley.readers, Google..authors))
+with(altmetrics, cor.test(Mendeley.readers, F1000.reviews))
+with(altmetrics, cor.test(Mendeley.readers, Q.A.site.users))
+with(altmetrics, cor.test(Mendeley.readers, Policy.documents))
+with(altmetrics, cor.test(Mendeley.readers, CiteULike.readers))
+```
+
+```{r}
 library(ggplot2)
 altmetrics <- read.csv("C:/Users/vinuthna/Desktop/Data_Science/Datasets/Altmetrics.csv", header = TRUE)
 ```
@@ -150,6 +184,20 @@ ggplot(aes(x=Mendeley.readers, y=Scopus.citations), data = altmetrics) +
   geom_line(stat = 'summary', fun.y = quantile, fun.args =list(probs = .9), linetype = 2, color = 'green')
 ```
 
+
+```{r}
+ggplot(aes(x=CiteULike.readers, y=Scopus.citations), data=altmetrics) +
+  geom_point()
+```
+```{r}
+ggplot(aes(x=Bloggers, y=Scopus.citations), data=altmetrics) +
+  geom_point()
+```
+
+```{r}
+ggplot(aes(x=F1000.reviews, y=Scopus.citations), data=altmetrics) +
+  geom_point()
+```
 
 
 
